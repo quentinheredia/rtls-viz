@@ -1,9 +1,22 @@
-export type RadioTech = 'BLE' | 'UWB' | 'WIFI_RTT';
-export type AlertSeverity = 'info' | 'warning' | 'critical';
-export type AlertType = 'geofence_breach' | 'low_battery' | 'anchor_offline' | 'packet_loss' | 'latency_sla' | 'privacy_violation';
-export type Role = 'Operator' | 'RFLead' | 'Embedded' | 'Algo' | 'Backend' | 'Security';
-export type DeviceStatus = 'online' | 'offline' | 'degraded';
-export type AlertStatus = 'open' | 'acked' | 'resolved';
+export type RadioTech = "BLE" | "UWB" | "WIFI_RTT";
+export type AlertSeverity = "info" | "warning" | "critical";
+export type AlertType =
+  | "geofence_breach"
+  | "low_battery"
+  | "anchor_offline"
+  | "packet_loss"
+  | "latency_sla"
+  | "privacy_violation"
+  | "unexpected_movement";
+export type Role =
+  | "Operator"
+  | "RFLead"
+  | "Embedded"
+  | "Algo"
+  | "Backend"
+  | "Security";
+export type DeviceStatus = "online" | "offline" | "degraded";
+export type AlertStatus = "open" | "acked" | "resolved";
 
 export interface Floorplan {
   id: string;
@@ -47,7 +60,7 @@ export interface TrackPoint {
   ts: string;
   pos: { x: number; y: number; z?: number };
   cov?: number;
-  source: 'raw' | 'filtered' | 'fingerprint';
+  source: "raw" | "filtered" | "fingerprint";
 }
 
 export interface Alert {
@@ -65,7 +78,7 @@ export interface Geofence {
   id: string;
   name: string;
   polygon: Array<{ x: number; y: number }>;
-  rule: 'enter' | 'exit' | 'dwell';
+  rule: "enter" | "exit" | "dwell";
   dwellSec?: number;
   active: boolean;
 }
