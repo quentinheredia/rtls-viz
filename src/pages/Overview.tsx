@@ -1,30 +1,41 @@
-import { useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useRTLSStore } from '@/store/useRTLSStore';
-import { mockAnchors, mockTags, mockAlerts } from '@/data/mockData';
-import StatusBadge from '@/components/StatusBadge';
-import { Radio, Tag, Bell, Activity, TrendingUp } from 'lucide-react';
+import { useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRTLSStore } from "@/store/useRTLSStore";
+import { mockAnchors, mockTags, mockAlerts } from "@/data/mockData";
+import StatusBadge from "@/components/StatusBadge";
+import { Radio, Tag, Bell, Activity, TrendingUp } from "lucide-react";
 
 export default function Overview() {
-  const { anchors, tags, alerts, health, setAnchors, setTags, setAlerts, setHealth } = useRTLSStore();
+  const {
+    anchors,
+    tags,
+    alerts,
+    health,
+    setAnchors,
+    setTags,
+    setAlerts,
+    setHealth,
+  } = useRTLSStore();
 
   useEffect(() => {
     setAnchors(mockAnchors);
     setTags(mockTags);
     setAlerts(mockAlerts);
-    setHealth({ 
-      ingestToUiMs: 132, 
-      packetLossPct: 0.4, 
+    setHealth({
+      ingestToUiMs: 132,
+      packetLossPct: 0.4,
       wsConnected: true,
-      uptime: 3600 
+      uptime: 3600,
     });
   }, [setAnchors, setTags, setAlerts, setHealth]);
 
-  const onlineAnchors = anchors.filter((a) => a.status === 'online').length;
-  const degradedAnchors = anchors.filter((a) => a.status === 'degraded').length;
+  const onlineAnchors = anchors.filter((a) => a.status === "online").length;
+  const degradedAnchors = anchors.filter((a) => a.status === "degraded").length;
   const lowBatteryTags = tags.filter((t) => t.batteryPct < 20).length;
-  const openAlerts = alerts.filter((a) => a.status === 'open').length;
-  const criticalAlerts = alerts.filter((a) => a.status === 'open' && a.severity === 'critical').length;
+  const openAlerts = alerts.filter((a) => a.status === "open").length;
+  const criticalAlerts = alerts.filter(
+    (a) => a.status === "open" && a.severity === "critical"
+  ).length;
 
   return (
     <div className="p-6 space-y-6">
@@ -45,13 +56,17 @@ export default function Overview() {
             <Radio className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold font-mono">{onlineAnchors}/{anchors.length}</div>
+            <div className="text-2xl font-bold font-mono">
+              {onlineAnchors}/{anchors.length}
+            </div>
             <div className="flex items-center gap-2 mt-2">
               <StatusBadge status="online" />
               {degradedAnchors > 0 && (
                 <>
                   <StatusBadge status="degraded" />
-                  <span className="text-xs text-muted-foreground">+{degradedAnchors}</span>
+                  <span className="text-xs text-muted-foreground">
+                    +{degradedAnchors}
+                  </span>
                 </>
               )}
             </div>
@@ -69,7 +84,13 @@ export default function Overview() {
             <div className="text-2xl font-bold font-mono">{tags.length}</div>
             <div className="flex items-center gap-2 mt-2 text-xs">
               <span className="text-muted-foreground">Low battery:</span>
-              <span className={lowBatteryTags > 0 ? "text-severity-warning font-semibold" : "text-status-online"}>
+              <span
+                className={
+                  lowBatteryTags > 0
+                    ? "text-severity-warning font-semibold"
+                    : "text-status-online"
+                }
+              >
                 {lowBatteryTags}
               </span>
             </div>
@@ -106,7 +127,9 @@ export default function Overview() {
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold font-mono">{health.ingestToUiMs}ms</div>
+            <div className="text-2xl font-bold font-mono">
+              {health.ingestToUiMs}ms
+            </div>
             <div className="flex items-center gap-2 mt-2 text-xs">
               <span className="text-muted-foreground">Latency</span>
               {health.ingestToUiMs < 200 ? (
@@ -128,11 +151,15 @@ export default function Overview() {
           <CardContent className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Anchors</span>
-              <span className="font-mono">{anchors.filter((a) => a.tech === 'UWB').length}</span>
+              <span className="font-mono">
+                {anchors.filter((a) => a.tech === "UWB").length}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Tags</span>
-              <span className="font-mono">{tags.filter((t) => t.tech === 'UWB').length}</span>
+              <span className="font-mono">
+                {tags.filter((t) => t.tech === "UWB").length}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Avg RMSE</span>
@@ -148,11 +175,15 @@ export default function Overview() {
           <CardContent className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Anchors</span>
-              <span className="font-mono">{anchors.filter((a) => a.tech === 'BLE').length}</span>
+              <span className="font-mono">
+                {anchors.filter((a) => a.tech === "BLE").length}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Tags</span>
-              <span className="font-mono">{tags.filter((t) => t.tech === 'BLE').length}</span>
+              <span className="font-mono">
+                {tags.filter((t) => t.tech === "BLE").length}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Avg RMSE</span>
@@ -168,11 +199,15 @@ export default function Overview() {
           <CardContent className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Anchors</span>
-              <span className="font-mono">{anchors.filter((a) => a.tech === 'WIFI_RTT').length}</span>
+              <span className="font-mono">
+                {anchors.filter((a) => a.tech === "WIFI_RTT").length}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Tags</span>
-              <span className="font-mono">{tags.filter((t) => t.tech === 'WIFI_RTT').length}</span>
+              <span className="font-mono">
+                {tags.filter((t) => t.tech === "WIFI_RTT").length}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Avg RMSE</span>
@@ -197,14 +232,22 @@ export default function Overview() {
                 <div className="flex items-center gap-3">
                   <StatusBadge status={alert.severity} />
                   <div className="text-sm">
-                    <div className="font-medium">{alert.type.replace(/_/g, ' ')}</div>
+                    <div className="font-medium">
+                      {alert.type.replace(/_/g, " ")}
+                    </div>
                     <div className="text-xs text-muted-foreground">
                       {new Date(alert.createdAt).toLocaleTimeString()}
                     </div>
                   </div>
                 </div>
-                <StatusBadge 
-                  status={alert.status === 'open' ? 'critical' : alert.status === 'acked' ? 'warning' : 'online'} 
+                <StatusBadge
+                  status={
+                    alert.status === "open"
+                      ? "critical"
+                      : alert.status === "acked"
+                      ? "warning"
+                      : "online"
+                  }
                 />
               </div>
             ))}

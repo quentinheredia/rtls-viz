@@ -1,46 +1,49 @@
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { useRTLSStore } from '@/store/useRTLSStore';
-import { mockAlerts } from '@/data/mockData';
-import StatusBadge from '@/components/StatusBadge';
-import { Check, X, Filter } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { useRTLSStore } from "@/store/useRTLSStore";
+import { mockAlerts } from "@/data/mockData";
+import StatusBadge from "@/components/StatusBadge";
+import { Check, X, Filter } from "lucide-react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 
 export default function Alerts() {
   const { alerts, setAlerts, updateAlert } = useRTLSStore();
-  const [severityFilter, setSeverityFilter] = useState<string>('all');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [severityFilter, setSeverityFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
 
   useEffect(() => {
     setAlerts(mockAlerts);
   }, [setAlerts]);
 
   const filteredAlerts = alerts.filter((alert) => {
-    if (severityFilter !== 'all' && alert.severity !== severityFilter) return false;
-    if (statusFilter !== 'all' && alert.status !== statusFilter) return false;
-    if (typeFilter !== 'all' && alert.type !== typeFilter) return false;
+    if (severityFilter !== "all" && alert.severity !== severityFilter)
+      return false;
+    if (statusFilter !== "all" && alert.status !== statusFilter) return false;
+    if (typeFilter !== "all" && alert.type !== typeFilter) return false;
     return true;
   });
 
   const handleAcknowledge = (id: string) => {
-    updateAlert(id, { status: 'acked' });
+    updateAlert(id, { status: "acked" });
   };
 
   const handleResolve = (id: string) => {
-    updateAlert(id, { status: 'resolved' });
+    updateAlert(id, { status: "resolved" });
   };
 
-  const openCount = alerts.filter((a) => a.status === 'open').length;
-  const criticalCount = alerts.filter((a) => a.status === 'open' && a.severity === 'critical').length;
+  const openCount = alerts.filter((a) => a.status === "open").length;
+  const criticalCount = alerts.filter(
+    (a) => a.status === "open" && a.severity === "critical"
+  ).length;
 
   return (
     <div className="p-6 space-y-6">
@@ -74,7 +77,9 @@ export default function Alerts() {
         <CardContent>
           <div className="flex gap-4">
             <div className="w-48">
-              <label className="text-xs text-muted-foreground mb-1.5 block">Severity</label>
+              <label className="text-xs text-muted-foreground mb-1.5 block">
+                Severity
+              </label>
               <Select value={severityFilter} onValueChange={setSeverityFilter}>
                 <SelectTrigger>
                   <SelectValue />
@@ -88,7 +93,9 @@ export default function Alerts() {
               </Select>
             </div>
             <div className="w-48">
-              <label className="text-xs text-muted-foreground mb-1.5 block">Status</label>
+              <label className="text-xs text-muted-foreground mb-1.5 block">
+                Status
+              </label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger>
                   <SelectValue />
@@ -102,18 +109,25 @@ export default function Alerts() {
               </Select>
             </div>
             <div className="w-64">
-              <label className="text-xs text-muted-foreground mb-1.5 block">Type</label>
+              <label className="text-xs text-muted-foreground mb-1.5 block">
+                Type
+              </label>
               <Select value={typeFilter} onValueChange={setTypeFilter}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="geofence_breach">Geofence Breach</SelectItem>
+                  <SelectItem value="geofence_breach">
+                    Geofence Breach
+                  </SelectItem>
                   <SelectItem value="low_battery">Low Battery</SelectItem>
                   <SelectItem value="anchor_offline">Anchor Offline</SelectItem>
                   <SelectItem value="packet_loss">Packet Loss</SelectItem>
                   <SelectItem value="latency_sla">Latency SLA</SelectItem>
+                  <SelectItem value="unexpected_movement">
+                    Unexpected Movement
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -140,7 +154,9 @@ export default function Alerts() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-semibold text-sm">
-                        {alert.type.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+                        {alert.type
+                          .replace(/_/g, " ")
+                          .replace(/\b\w/g, (l) => l.toUpperCase())}
                       </span>
                       {alert.entityId && (
                         <Badge variant="outline" className="text-xs font-mono">
@@ -163,16 +179,16 @@ export default function Alerts() {
                   <Badge
                     variant="outline"
                     className={
-                      alert.status === 'open'
-                        ? 'severity-critical'
-                        : alert.status === 'acked'
-                        ? 'severity-warning'
-                        : 'status-online'
+                      alert.status === "open"
+                        ? "severity-critical"
+                        : alert.status === "acked"
+                        ? "severity-warning"
+                        : "status-online"
                     }
                   >
                     {alert.status}
                   </Badge>
-                  {alert.status === 'open' && (
+                  {alert.status === "open" && (
                     <>
                       <Button
                         size="sm"
@@ -192,7 +208,7 @@ export default function Alerts() {
                       </Button>
                     </>
                   )}
-                  {alert.status === 'acked' && (
+                  {alert.status === "acked" && (
                     <Button
                       size="sm"
                       variant="outline"
